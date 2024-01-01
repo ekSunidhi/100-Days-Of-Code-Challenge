@@ -7,7 +7,7 @@ def get_sensible_answer(prompt):
         if answer in ["yes", "no"]:
             return answer
         else:
-            print("Please enter a sensible answer (yes or no).")
+            print("I'm not sure I understand... Please enter 'Yes' or 'No'.")
 
 # Check if the user is a lover of coffee
 answer = get_sensible_answer("Are you a lover of coffee? ")
