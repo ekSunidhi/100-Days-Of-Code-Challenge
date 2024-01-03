@@ -1,0 +1,68 @@
+import random
+from enum import IntEnum
+
+
+# Creating a custom Action
+# Here, we define an enumeration class Action using IntEnum, where Rock, Paper, and Scissors are assigned integer values 0, 1, and 2, respectively
+class Action(IntEnum):
+    Rock=0
+    Paper=1
+    Scissors=2
+ 
+print("You DARE challenge me mortal? Let us play a game of Rock-Paper-Scissors! ")
+
+# This function prompts the user to enter their choice of action (Rock, Paper, or Scissors)
+# The corresponding Action enum is returned
+def get_user_selection():
+    choices=[f"{action.name}[{action.value}]" for action in Action]
+    choices_str=", ".join(choices)
+    selection=int(input(f"Enter an action ({choices_str}): "))
+    action=Action(selection)
+    return action
+        
+    
+# This function generates a random integer between 0 and 2 (inclusive) to represent the computer's choice of action 
+# The corresponding Action enum is returned    
+def get_computer_selection():
+    selection=random.randint(0, len(Action)-1)
+    action=Action(selection)
+    return action    
+
+
+def determine_winner(user_action, computer_action):
+    if user_action==computer_action:
+        print(f"Both of us have chosen {user_action.name}... It's a TIE!")
+    elif user_action==Action.Rock:
+        if computer_action==Action.Scissors:
+             print("Oh No! Your rock has smashed my scissors. You WIN!")    
+        else:
+                print("Ha ha! My paper has covered your rock. I WIN!")
+    elif user_action==Action.Paper:
+        if computer_action==Action.Rock:
+            print("Oh No! Your paper has cover my rock. You WIN!")    
+        else:
+            print("Ha ha! My scissors have cut your paper. I WIN!")
+    elif user_action==Action.Scissors:
+        if computer_action==Action.Paper:
+            print("Oh No! Your scissors have cut my paper. You WIN!")    
+        else:
+            print("Ha ha! My rock has smashed your scissors. I WIN!")
+
+
+while True:
+    # This try-except block catches ValueError exceptions that may occur if the user enters an invalid action (not within the range [0, 2]) and prompts the user to enter a valid action.
+    try:
+        user_action=get_user_selection()
+    except ValueError as e:
+        range_str=f"[0, {len(Action)-1}]"
+        print(f"Invalid action. Enter a value in the range {range_str}.")
+        continue
+        
+    computer_action=get_computer_selection()
+    determine_winner(user_action, computer_action)
+        
+    play_again=input("Another duel? Y/N ")
+    if play_again.lower()!="y": # Make the option case insensitive
+        print("That was surprisingly fun... See you until next time mortal.")
+        break # Break the while loop if the the user doesn't say "Yes"
+        
