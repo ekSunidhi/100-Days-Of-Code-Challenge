@@ -39,6 +39,6 @@ print(result_h.group() if result_h else "Not found")
 result_i = re.search(r'\W', text)
 print(result_i.group() if result_i else "Not found")
 
-# Using \z: Matches the end of the string
+# Using \Z: Matches the end of the string
 result_j = re.search(r'example\Z', text)
 print(result_j.group() if result_j else "Not found")

@@ -10,5 +10,5 @@ What this program covers:
 - \S: Matches any non-whitespace character
 - \w: Matches any alphanumeric character (equivalent to [a-zA-Z0-9_])
 - \W: Matches any non-alphanumeric character
-- \z: Matches the end of the string
+- \Z: Matches the end of the string
 
