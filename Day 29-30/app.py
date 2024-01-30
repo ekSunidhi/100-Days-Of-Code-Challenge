@@ -8,7 +8,7 @@ st.set_page_config(page_title="Sales Dashboard",
                    layout="wide" # Sets the page layout to entire screen
                    )
 
-@st.cache
+@st.cache_data
 def get_data_from_excel():
     df=pd.read_excel(
         io=r'C:\Users\sunid\Desktop\supermarkt_sales.xlsx',
@@ -48,6 +48,11 @@ df_selection=df.query(
     "City==@city & Customer_type==@customer_type & Gender==@gender"
 )
 
+# Check if the dataframe is empty:
+if df_selection.empty:
+    st.warning("No data available based on the current filter settings!")
+    st.stop() # This will halt the app from further execution.
+
 # ------- Main Page -------
 st.title(":bar_chart: Sales Dashboard")
 st.markdown("##")
@@ -69,11 +74,11 @@ with right_column:
     st.subheader("Average Sales Per Transaction:")
     st.subheader(f"US $ {average_sale_by_transaction}")
 
-st.markdown("---")
+st.markdown("""---""")
 
 # Sales by product line (bar chart)
 sales_by_product_line=(
-    df_selection.groupby(by=["Product line"]).sum()[["Total"]].sort_values(by="Total")
+    df_selection.groupby(by=["Product line"])[["Total"]].sum().sort_values(by="Total")
 )
 fig_product_sales=px.bar(
     sales_by_product_line,
@@ -81,7 +86,7 @@ fig_product_sales=px.bar(
     y=sales_by_product_line.index,
     orientation="h",
     title="<b>Sales by Product Line</b>",
-    color_discrete_sequence=["0083b8"]*len(sales_by_product_line),
+    color_discrete_sequence=["#0083b8"]*len(sales_by_product_line),
     template="plotly_white",
 )
 fig_product_sales.update_layout(
@@ -89,10 +94,8 @@ fig_product_sales.update_layout(
     xaxis=(dict(showgrid=False))
 )
 
-st.plotly_chart(fig_product_sales)
-
 # Sales by hour (bar chart)
-sales_by_hour=df_selection.groupby(by=["hour"]).sum()[['Total']]
+sales_by_hour=df_selection.groupby(by=["hour"])[['Total']].sum()
 fig_hourly_sales=px.bar(
     sales_by_hour, 
     x=sales_by_hour.index,
@@ -114,7 +117,7 @@ right_column.plotly_chart(fig_product_sales, use_container_width=True)
 # ------- Hide Streamlit Style -------
 hide_st_style="""
 <style>
-#MainMenu {visibiliy: hidden;}
+#MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 header {visibility: hidden;}
 </style>
