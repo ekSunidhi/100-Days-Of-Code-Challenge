@@ -1,2 +1,0 @@
-What this program covers:
--------------------------
